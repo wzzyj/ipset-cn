@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [[ "$dev" == "tun11" ]]; then
+    if [[ "$script_type" == "up" ]]; then
+        ip rule add fwmark 818 table 111
+    fi
+
+    if [[ "$script_type" == "down" ]]; then
+        ip rule del fwmark 818 table 111
+    fi
+fi

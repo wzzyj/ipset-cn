@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ -f /jffs/build-cn-ipset.sh ] && [[ "$2" == "connected" ]] && [[ $(date +%d) == 15 ]]; then
+    logger "Running build-cn-ipset.sh"
+    /jffs/build-cn-ipset.sh
+fi

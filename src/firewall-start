@@ -1,0 +1,14 @@
+#!/bin/sh
+
+logger "Adding firawall rules for ipset-cn"
+if [ -f /jffs/CNIP.ipset ]; then
+    logger "Restore from CNIP.ipset"
+    ipset destroy CNIP > /dev/null 2>&1
+    ipset restore < /jffs/CNIP.ipset
+    logger "Restore from CNIP.ipset done"
+    iptables -t mangle -N fwmark
+    iptables -t mangle -I PREROUTING -m set --match-set CNIP dst -j MARK --set-mark 818
+    iptables -t mangle -A fwmark -m set --match-set CNIP dst -j MARK --set-mark 818
+    iptables -t nat -A POSTROUTING -m mark --mark 818 -j MASQUERADE
+    iptables -t mangle -A OUTPUT -j fwmark
+fi
